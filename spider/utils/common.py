@@ -5,10 +5,9 @@ import logging
 import requests
 import configparser
 
-
 proxy_list = [
-"120.196.112.6:3128",
-"124.205.155.153:9090",
+    "120.196.112.6:3128",
+    "124.205.155.153:9090",
 ]
 
 headers_list = [

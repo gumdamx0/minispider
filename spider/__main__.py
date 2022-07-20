@@ -9,7 +9,6 @@ from spider.utils.consumer import Consumer
 
 
 def paser_args():
-
     parser = argparse.ArgumentParser(prog='minispider', description='from good coder project')
 
     parser.add_argument('--seed', type=str, default='./urls', help='Path to seed file')
@@ -42,12 +41,12 @@ def paser_args():
 
 
 def main(opt):
-
     page_queue = Queue(100)
     img_queue = Queue(1000)
+    csv_file = 'summary.csv'
 
-    if os.path.exists(opt.result+'/summary.csv'):
-        os.remove(opt.result+'/summary.csv')
+    if os.path.exists(os.path.join(opt.result, csv_file)):
+        os.remove(os.path.join(opt.result, csv_file))
 
     with open(opt.seed, 'r') as source_file:
         urls = source_file.readlines()

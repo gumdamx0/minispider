@@ -24,9 +24,9 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     install_requires=[
-            'chardet>=5.0.0',
-            'lxml>=4.9.1',
-            'requests>=2.28.1'
+        'chardet>=5.0.0',
+        'lxml>=4.9.1',
+        'requests>=2.28.1'
     ],
     zip_safe=True,
 )
