@@ -19,9 +19,9 @@ class Producer(threading.Thread):
             if self._page_queue.empty():
                 break
             url = self._page_queue.get()
-            self.parse_page(url)
+            self.parser_page(url)
 
-    def parse_page(self, url):
+    def parser_page(self, url):
 
         headers = get_headers()
         resp = requests.get(url=url, headers=headers, timeout=self._args.crawl_timeout, allow_redirects=False)

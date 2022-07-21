@@ -2,7 +2,7 @@ import os
 import time
 import threading
 
-from spider.utils.common import get_headers, save_htm, save_errlog
+from spider.utils.common import csv_file, get_headers, save_htm, save_errlog
 
 
 class Consumer(threading.Thread):
@@ -15,20 +15,19 @@ class Consumer(threading.Thread):
 
     def run(self):
         headers = get_headers()
-        csv_file = 'summary.csv'
 
         while True:
             if self._img_queue.empty() and self._page_queue.empty():
                 break
 
             try:
-                filea = open(os.path.join(self._args.result, csv_file), mode='a', encoding='utf-8')
                 img_url, file_name = self._img_queue.get()
                 print(img_url, '\tis proceeding')
-                filea.write(img_url + ',')
-                filea.write(str(save_htm(img_url, headers, self._args)) + ',')
-                filea.write(str(time.strftime("%Y-%m-%d %H:%M:%S")))
-                filea.write('\n')
+                with open(os.path.join(self._args.result, csv_file), mode='a', encoding='utf-8') as f:
+                    f.write(img_url + ',')
+                    f.write(str(save_htm(img_url, headers, self._args)) + ',')
+                    f.write(str(time.strftime("%Y-%m-%d %H:%M:%S")))
+                    f.write('\n')
                 print(img_url, '\tfile saved successfully!')
                 time.sleep(self._args.crawl_interval)
 

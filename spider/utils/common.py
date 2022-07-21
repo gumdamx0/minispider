@@ -31,13 +31,16 @@ proxies = {
     'https': None,
 }
 
+csv_file = 'summary.csv'
+cnt_file = 'data'
+
 
 def get_version():
     '''
     code revise version
     :return: str
     '''
-    return '1.0.0'
+    return '0.1.0'
 
 
 def read_conf(config, args):
@@ -80,14 +83,12 @@ def save_htm(url, headers, args):
     :return: int, size of the saved file
     '''
     subresp = requests.get(url, headers=headers, timeout=args.crawl_timeout, allow_redirects=False)
-    # subresp.raise_for_status()
     filename = url.strip('/').split('/')[-1]
     if '?' in filename:
         filename = filename.replace('?', ' ')
     svpath = os.path.join(args.result, 'data', filename)
     with open(svpath, mode='wb') as f:
         f.write(subresp.content)
-        f.close()
     subresp.close()
 
     return os.path.getsize(svpath)
@@ -118,5 +119,5 @@ def save_errlog(e, args):
     console.setFormatter(formatter)
     logger.addHandler(handler)
     logger.addHandler(console)
-    logger.setLevel(logging.INFO)  # 日志级别
+    logger.setLevel(logging.INFO)
     logging.info(e)

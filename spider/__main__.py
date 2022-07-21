@@ -3,12 +3,12 @@ import json
 import argparse
 from queue import Queue
 
-from spider.utils.common import get_version, read_conf
+from spider.utils.common import csv_file, cnt_file, get_version, read_conf
 from spider.utils.producer import Producer
 from spider.utils.consumer import Consumer
 
 
-def paser_args():
+def parser_args():
     parser = argparse.ArgumentParser(prog='minispider', description='from good coder project')
 
     parser.add_argument('--seed', type=str, default='./urls', help='Path to seed file')
@@ -34,36 +34,34 @@ def paser_args():
     if not os.path.exists(opt.result):
         os.mkdir(opt.result)
 
-    if not os.path.exists(os.path.join(opt.result, 'data')):
-        os.mkdir(os.path.join(opt.result, 'data'))
+    if not os.path.exists(os.path.join(opt.result, cnt_file)):
+        os.mkdir(os.path.join(opt.result, cnt_file))
 
     return opt
 
 
-def main(opt):
+def main(args):
     page_queue = Queue(100)
     img_queue = Queue(1000)
-    csv_file = 'summary.csv'
 
-    if os.path.exists(os.path.join(opt.result, csv_file)):
-        os.remove(os.path.join(opt.result, csv_file))
+    if os.path.exists(os.path.join(args.result, csv_file)):
+        os.remove(os.path.join(args.result, csv_file))
 
-    with open(opt.seed, 'r') as source_file:
+    with open(args.seed, 'r') as source_file:
         urls = source_file.readlines()
-        source_file.close()
     for url in urls:
         page_queue.put(url)
 
-    for x in range(opt.thread_count):
-        t = Producer(page_queue=page_queue, img_queue=img_queue, args=opt)
+    for x in range(args.thread_count):
+        t = Producer(page_queue=page_queue, img_queue=img_queue, args=args)
         t.start()
 
     img_queue.get()
 
-    for x in range(opt.thread_count):
-        t = Consumer(page_queue=page_queue, img_queue=img_queue, args=opt)
+    for x in range(args.thread_count):
+        t = Consumer(page_queue=page_queue, img_queue=img_queue, args=args)
         t.start()
 
 
 if __name__ == '__main__':
-    main(paser_args())
+    main(parser_args())

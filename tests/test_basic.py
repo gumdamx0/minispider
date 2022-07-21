@@ -1,11 +1,11 @@
 from spider.utils.common import get_version, get_headers, save_htm, save_errlog
-from spider.__main__ import paser_args
+from spider.__main__ import parser_args
 
 if __name__ == '__main__':
     '''
     测试
     '''
-    opt = paser_args()
+    opt = parser_args()
 
     print(get_version())
 
