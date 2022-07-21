@@ -5,11 +5,6 @@ import logging
 import requests
 import configparser
 
-proxy_list = [
-    "120.196.112.6:3128",
-    "124.205.155.153:9090",
-]
-
 headers_list = [
     "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36",
@@ -26,30 +21,23 @@ headers_list = [
     "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0 "
 ]
 
-proxies = {
-    'http': None,
-    'https': None,
-}
-
 csv_file = 'summary.csv'
 cnt_file = 'data'
 
 
 def get_version():
-    '''
-    code revise version
-    :return: str
-    '''
+    """Return the code revise version."""
+
     return '0.1.0'
 
 
 def read_conf(config, args):
-    '''
-    change parameters according to conf with a json form
-    :param config:config parser
-    :param args:argument parser
-    :return:None
-    '''
+    """Change parameters according to conf with a json form.
+
+    Keyword arguments:
+    config -- the config parser
+    args -- the argument parser
+    """
 
     cfg = configparser.ConfigParser()
 
@@ -64,10 +52,8 @@ def read_conf(config, args):
 
 
 def get_headers():
-    '''
-    chooce random headers
-    :return: dict, headers
-    '''
+    """Return random headers."""
+
     headers = random.choice(headers_list)
     headers = {"user-agent": "{}".format(headers)}
 
@@ -75,13 +61,14 @@ def get_headers():
 
 
 def save_htm(url, headers, args):
-    '''
-    save each web page
-    :param url: url of the web page
-    :param headers: request headers
-    :param args: parameter to point out the path to save
-    :return: int, size of the saved file
-    '''
+    """Save web page.
+
+    Keyword arguments:
+    url -- url of the web page
+    headers -- request headers
+    args -- parameter to point out the path to save
+    """
+
     subresp = requests.get(url, headers=headers, timeout=args.crawl_timeout, allow_redirects=False)
     filename = url.strip('/').split('/')[-1]
     if '?' in filename:
@@ -95,11 +82,13 @@ def save_htm(url, headers, args):
 
 
 def save_errlog(e, args):
-    '''
-    save each failed crawling
-    :param e: standard err info
-    :return: None
-    '''
+    """Save failed crawling.
+
+    Keyword arguments:
+    e -- standard err info
+    args -- parameter to point out the path to save
+    """
+
     now = str(time.strftime("%Y-%m-%d %H-%M-%S"))
     today = now.split(' ')[0]
     logName = now + "_err.log"

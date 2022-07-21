@@ -6,7 +6,13 @@ from spider.utils.common import csv_file, get_headers, save_htm, save_errlog
 
 
 class Consumer(threading.Thread):
-    # 下载网页内容
+    """
+    Attributes:
+    page_queue (:class:`Queue`) : the queue of pages to be process
+    img_queue (:class:`Queue`): the queue of pages to be save
+    args (:class:`argparse.Namespace`) : parameters in configuration file
+    """
+
     def __init__(self, page_queue, img_queue, args):
         super(Consumer, self).__init__()
         self._page_queue = page_queue

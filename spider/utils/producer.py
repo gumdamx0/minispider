@@ -7,7 +7,13 @@ from spider.utils.common import get_headers
 
 
 class Producer(threading.Thread):
-    # 获取地址
+    """
+    Attributes:
+    page_queue (:class:`Queue`) : the queue of pages to be process
+    img_queue (:class:`Queue`): the queue of pages to be save
+    args (:class:`argparse.Namespace`) : parameters in configuration file
+    """
+
     def __init__(self, page_queue, img_queue, args):
         super(Producer, self).__init__()
         self._page_queue = page_queue
